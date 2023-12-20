@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desh Keyboard Diagnostic Info Viewer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <style>
+        /* Custom styles */
+        body {
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .container {
+            max-width: 1024px;
+        }
+
+        .dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            display: none;
+        }
+
+        .dialog-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            overflow: auto;
+            max-height: 80vh;
+        }
+
+        .json-view-button {
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
+            margin-bottom: 10px;
+        }
+
+        .search-bar {
+            margin-bottom: 10px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .highlight {
+            background-color: lightblue;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            table {
+                font-size: 0.8rem;
+            }
+
+            .json-view-button {
+                font-size: 0.8rem;
+            }
+
+            .search-input {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Desh Keyboard Diagnostic Info Viewer</h1>
+
+        <input type="file" id="fileInput" accept=".txt" class="form-control">
+        <br>
+        <button onclick="readFile()" class="btn btn-primary">View File</button>
+        <br><br>
+        <div class="json-view-button" onclick="openJsonDialog()">View JSON Data</div>
+
+        <h2>Filtered Data:</h2>
+        <div class="search-bar">
+            <label for="filterInput">Filter by key:</label>
+            <input type="text" id="filterInput" placeholder="Start typing..." class="form-control">
+        </div>
+
+        <!-- File content table -->
+        <table id="dataTable" class="table table-bordered table-striped"></table>
+
+        <!-- Dialog for displaying object data -->
+        <div id="jsonDialog" class="dialog">
+            <div class="dialog-content">
+                <span class="close-btn" onclick="closeJsonDialog()">&times;</span>
+                <h2 id="jsonDialogTitle">All JSON Data</h2>
+                <pre id="jsonDialogContent"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8QD26k"
+        crossorigin="anonymous"></script>
+    <script>
+        let jsonData = {}; // Store JSON data globally
+
+        function readFile() {
+            const fileInput = document.getElementById('fileInput');
+
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const content = e.target.result;
+
+                    try {
+                        jsonData = JSON.parse(content);
+                        displayTable(jsonData);
+                    } catch (error) {
+                        alert('Error parsing JSON data: ' + error.message);
+                    }
+                };
+
+                reader.readAsText(file);
+            } else {
+                alert('Please select a file.');
+            }
+        }
+
+        function displayTable(data) {
+            const dataTable = document.getElementById('dataTable');
+            dataTable.innerHTML = ''; // Clear previous data
+
+            if (!data || typeof data !== 'object') {
+                return;
+            }
+
+            const keys = Object.keys(data);
+
+            // Create table rows
+            keys.forEach(key => {
+                const row = dataTable.insertRow();
+                const keyCell = row.insertCell(0);
+                const valueCell = row.insertCell(1);
+
+                keyCell.textContent = key;
+                const value = data[key];
+
+                if (typeof value === 'object') {
+                    // If value is an object, add a link to view the object data
+                    const viewLink = document.createElement('a');
+                    viewLink.href = 'javascript:void(0)';
+                    viewLink.textContent = 'View Object';
+                    viewLink.onclick = function () {
+                        viewObjectData(key, value);
+                    };
+                    valueCell.appendChild(viewLink);
+                } else {
+                    // Otherwise, display the value directly
+                    valueCell.textContent = value;
+                }
+            });
+        }
+
+        function filterData() {
+            const filterInput = document.getElementById('filterInput').value.toLowerCase();
+            const dataTable = document.getElementById('dataTable');
+            const rows = dataTable.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let isMatch = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    const cellText = cells[j].textContent.toLowerCase();
+
+                    if (cellText.includes(filterInput)) {
+                        isMatch = true;
+                        break;
+                    }
+                }
+
+                rows[i].style.display = isMatch ? '' : 'none';
+            }
+        }
+
+        function viewObjectData(key, objectData) {
+            const dialogTitle = document.getElementById('jsonDialogTitle');
+            dialogTitle.textContent = `${key}`;
+
+            const jsonDialogContent = document.getElementById('jsonDialogContent');
+            jsonDialogContent.innerHTML = JSON.stringify(objectData, null, 2);
+            highlightSearchKey();
+
+            // Show the dialog
+            const jsonDialog = document.getElementById('jsonDialog');
+            jsonDialog.style.display = 'flex';
+        }
+
+        function openJsonDialog() {
+            const jsonDialogTitle = document.getElementById('jsonDialogTitle');
+            jsonDialogTitle.textContent = 'All JSON Data';
+
+            const jsonDialogContent = document.getElementById('jsonDialogContent');
+            jsonDialogContent.innerHTML = JSON.stringify(jsonData, null, 2);
+            highlightSearchKey();
+
+            // Show the dialog
+            const jsonDialog = document.getElementById('jsonDialog');
+            jsonDialog.style.display = 'flex';
+        }
+
+        function closeJsonDialog() {
+            // Close the dialog when clicking outside of it
+            const jsonDialog = document.getElementById('jsonDialog');
+            jsonDialog.style.display = 'none';
+        }
+
+        function stopPropagation(event) {
+            event.stopPropagation();
+        }
+
+        function highlightSearchKey() {
+            // No search in dialog, so this function is not needed
+        }
+        document.getElementById('filterInput').addEventListener('input', filterData);
+
+        document.getElementById('jsonDialog').addEventListener('click', closeJsonDialog);
+    </script>
+</body>
+
+</html>
