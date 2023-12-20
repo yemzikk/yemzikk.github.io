@@ -99,11 +99,9 @@
 
         <div class="input-group mb-3">
             <input type="file" id="fileInput" class="form-control" accept=".txt">
-            <label class="input-group-text btn btn-primary" onclick="readFile()" for="fileInput">View File</label>
+            <button type="button" class="btn btn-warning" onclick="openJsonDialog()">View JSON Data</button>
+            <label class="btn btn-primary" onclick="readFile()" for="fileInput">View File</label>
         </div>
-        <br><br>
-        <div class="json-view-button" onclick="openJsonDialog()">View JSON Data</div>
-
         <h2>Filtered Data:</h2>
         <div class="search-bar">
             <label for="filterInput">Filter by key:</label>
@@ -225,6 +223,10 @@
         }
 
         function openJsonDialog() {
+            if (Object.keys(jsonData).length === 0) {
+                alert('Please select a file first.');
+                return;
+            }
             const jsonDialogTitle = document.getElementById('jsonDialogTitle');
             jsonDialogTitle.textContent = 'All JSON Data';
 
