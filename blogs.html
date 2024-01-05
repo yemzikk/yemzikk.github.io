@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <title>Blog Links</title>
+</head>
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Tech Blogs</h1>
+        <!-- Blog list container using Bootstrap grid -->
+        <div class="row" id="blogButtons"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Blog data
+        const blogs = [
+            { name: 'Netflix Blog', link: 'https://netflixtechblog.com/' },
+            { name: 'Uber Blog', link: 'https://www.uber.com/en-IN/blog/engineering/' },
+            { name: 'LinkedIn Blog', link: 'https://engineering.linkedin.com/blog' },
+            { name: 'Slack Blog', link: 'https://slack.engineering/' },
+            { name: 'Stripe Blog', link: 'https://stripe.com/blog' },
+            { name: 'AWS Blog', link: 'https://aws.amazon.com/blogs/architecture/' },
+            { name: 'Discord Blog', link: 'https://discord.com/blog/' },
+            { name: 'Meta Blog', link: 'https://engineering.fb.com/' },
+            { name: 'Zerodha Blog', link: 'https://zerodha.tech/blog/hello-world/' }
+        ];
+
+        // Function to create and append buttons
+        function createButtons() {
+            const blogButtonsContainer = document.getElementById('blogButtons');
+
+            blogs.forEach(blog => {
+                const colElement = document.createElement('div');
+                colElement.className = 'col-12 col-md-4';
+
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card mb-3';
+
+                const cardBodyElement = document.createElement('div');
+                cardBodyElement.className = 'card-body d-flex flex-column';
+
+                // Last Visited message
+                const lastVisitedTimeElement = document.createElement('span');
+                lastVisitedTimeElement.id = `lastVisitedTime_${blog.name}`;
+                lastVisitedTimeElement.className = 'text-muted small mb-2 mt-auto';
+                updateLastVisitedTime(blog.name, getLastVisitedTime(blog.name), lastVisitedTimeElement);
+
+                const blogNameElement = document.createElement('span');
+                blogNameElement.textContent = blog.name;
+                blogNameElement.className = 'h5 card-title mb-3';
+
+                const buttonElement = document.createElement('button');
+                buttonElement.className = 'btn btn-primary';
+                buttonElement.textContent = 'Open';
+                buttonElement.addEventListener('click', () => {
+                    openLink(blog.link);
+                    setLastVisitedTime(blog.name);
+                    updateLastVisitedTime(blog.name, getLastVisitedTime(blog.name), lastVisitedTimeElement);
+                });
+
+                cardBodyElement.appendChild(blogNameElement);
+                cardBodyElement.appendChild(lastVisitedTimeElement);
+                cardBodyElement.appendChild(buttonElement);
+                cardElement.appendChild(cardBodyElement);
+                colElement.appendChild(cardElement);
+
+                blogButtonsContainer.appendChild(colElement);
+            });
+        }
+
+        // Function to open link in a new tab
+        function openLink(link) {
+            window.open(link, '_blank');
+        }
+
+        // Function to get the last visited time from local storage
+        function getLastVisitedTime(blogName) {
+            const lastVisitedTime = localStorage.getItem(`lastVisitedTime_${blogName}`);
+            return lastVisitedTime ? new Date(lastVisitedTime) : null;
+        }
+
+        // Function to set the last visited time in local storage
+        function setLastVisitedTime(blogName) {
+            const currentTime = new Date();
+            localStorage.setItem(`lastVisitedTime_${blogName}`, currentTime);
+        }
+
+        // Function to update the last visited time label
+        function updateLastVisitedTime(blogName, lastVisitedTime, lastVisitedTimeElement) {
+            if (lastVisitedTime) {
+                lastVisitedTimeElement.textContent = `Last Visited: ${lastVisitedTime.toLocaleDateString()}`;
+            } else {
+                lastVisitedTimeElement.textContent = 'Never Visited';
+            }
+        }
+
+        // Populate buttons on page load
+        window.onload = createButtons;
+    </script>
+</body>
+
+</html>
