@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Choose Step Support Data Update</title>
+</head>
+<style>
+    .underline {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h1 class="text-center">Choose Step Support Data Update</h1>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="installationId">Installation ID</label>
+                        <input type="text" class="form-control" id="installationId" placeholder="Enter Installation ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsappNumber">WhatsApp Number</label>
+                        <input type="text" class="form-control" id="whatsappNumber" placeholder="Enter WhatsApp Number">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="button" class="btn btn-primary" onclick="getDetails()">Get Details</button>
+                </form>
+            </div>
+        </div>
+        <div class="card mt-5">
+            <div class="card-header">
+                <h1 class="text-center">User Details</h1>
+            </div>
+            <div class="card-body">
+                <table id="dataTable" class="table table-bordered table-striped"></table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</body>
+<script>
+    $(document).ready(function () {
+        $("form").submit(function (e) {
+            e.preventDefault();
+            var installationId = $("#installationId").val();
+            var whatsappNumber = $("#whatsappNumber").val();
+            if (installationId == "" || whatsappNumber == "") {
+                alert("Please fill all the fields");
+            } else {
+                installationId = installationId.replace(/\s/g, '');
+                whatsappNumber = whatsappNumber.replace(/\s/g, '');
+                $.ajax({
+                    url: "https://tofjpqpjvukyhdolcyic.supabase.co/rest/v1/easy_config_gegevensverzameling_v2?installation_id=eq." + installationId,
+                    type: "GET",
+                    headers: {
+                        "apikey": ".eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZmpwcXBqdnVreWhkb2xjeWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNjE2MjA0OCwiZXhwIjoyMDIxNzM4MDQ4fQ.5Cu876rrfDNeRLpy7HwTxZQNuJ-5xTMbVTpzR86T6G4",
+                        "Authorization": "Bearer .eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZmpwcXBqdnVreWhkb2xjeWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNjE2MjA0OCwiZXhwIjoyMDIxNzM4MDQ4fQ.5Cu876rrfDNeRLpy7HwTxZQNuJ-5xTMbVTpzR86T6G4"
+                    },
+                    success: function (data) {
+                        if (data.length > 0) {
+                            $.ajax({
+                                url: "https://tofjpqpjvukyhdolcyic.supabase.co/rest/v1/easy_config_gegevensverzameling_v2?installation_id=eq." + installationId,
+                                type: "PUT",
+                                headers: {
+                                    "apikey": ".eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZmpwcXBqdnVreWhkb2xjeWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNjE2MjA0OCwiZXhwIjoyMDIxNzM4MDQ4fQ.5Cu876rrfDNeRLpy7HwTxZQNuJ-5xTMbVTpzR86T6G4",
+                                    "Authorization": "Bearer .eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZmpwcXBqdnVreWhkb2xjeWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNjE2MjA0OCwiZXhwIjoyMDIxNzM4MDQ4fQ.5Cu876rrfDNeRLpy7HwTxZQNuJ-5xTMbVTpzR86T6G4"
+                                },
+                                data: {
+                                    "installation_id": installationId,
+                                    "whatsapp_number": whatsappNumber
+                                },
+                                success: function (data) {
+                                    alert("Data saved successfully");
+                                    getDetails();
+                                    $("#installationId").val("");
+                                    $("#whatsappNumber").val("");
+                                },
+                                error: function (error) {
+                                    alert("Something went wrong");
+                                }
+                            });
+                            return;
+                        } else {
+                            alert("Installation ID does not exist");
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert("Something went wrong");
+                    }
+                });
+            }
+        });
+    });
+
+    function getDetails() {
+        var installationId = $("#installationId").val();
+        if (installationId == "") {
+            alert("Please fill all the fields");
+        } else {
+            installationId = installationId.replace(/\s/g, '');
+            $.ajax({
+                url: "https://tofjpqpjvukyhdolcyic.supabase.co/rest/v1/easy_config_gegevensverzameling_v2?installation_id=eq." + installationId,
+                type: "GET",
+                headers: {
+                    "apikey": ".eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZmpwcXBqdnVreWhkb2xjeWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNjE2MjA0OCwiZXhwIjoyMDIxNzM4MDQ4fQ.5Cu876rrfDNeRLpy7HwTxZQNuJ-5xTMbVTpzR86T6G4",
+                    "Authorization": "Bearer .eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZmpwcXBqdnVreWhkb2xjeWljIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwNjE2MjA0OCwiZXhwIjoyMDIxNzM4MDQ4fQ.5Cu876rrfDNeRLpy7HwTxZQNuJ-5xTMbVTpzR86T6G4"
+                },
+                success: function (data) {
+                    var table = document.getElementById("dataTable");
+                    table.innerHTML = "";
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = "Device Manufacturer";
+                    cell2.innerHTML = data[0].device_manufacturer;
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = "Total Keyboards Shown in Picker";
+                    cell2.innerHTML = data[0].count_in_picker;
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = "Setup Completed Time";
+                    cell2.innerHTML = data[0].setup_completed_ts;
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = "Choose Keyboard Clicked Time";
+                    cell2.innerHTML = data[0].choose_keyboard_clicked_ts;
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = "Dark Mode";
+                    if (data[0].is_dark_mode == 1) {
+                        cell2.innerHTML = "Yes";
+                    } else {
+                        cell2.innerHTML = "No";
+                    }
+                    var row = table.insertRow();
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    cell1.innerHTML = "WhatsApp Number";
+                    cell2.className = "underline";
+                    cell2.innerHTML = data[0].whatsapp_number;
+                    if (data[0].whatsapp_number != "") {
+                        cell2.style.color = "green";
+                        cell2.onclick = function () {
+                            window.open("https://web.whatsapp.com/send/?app_absent=0&type=phone_number&phone=" + data[0].whatsapp_number);
+                        };
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert("Something went wrong");
+                }
+            });
+        }
+    }
+</script>
+
+</html>
