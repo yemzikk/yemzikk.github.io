@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <title>Desh Keyboard Theme Export Viewer</title>
 </head>
+<style>
+    th:first-child, td:first-child
+{
+  position:sticky;
+  left:0px;
+  background-color:rgb(196, 195, 195);
+}
+
+</style>
 
 <body>
     <!-- zip file upload option -->
@@ -23,7 +32,7 @@
                 <button onclick="handleUpload()" class="btn btn-primary">Upload</button>
             </div>
         </div>
-        <table id="dataTable" class="table table-bordered table-striped">
+        <table id="dataTable" class="table table-bordered">
         </table>
     </div>
 
