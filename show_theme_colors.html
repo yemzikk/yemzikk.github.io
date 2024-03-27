@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Desh Keyboard Theme Export Viewer</title>
+</head>
+
+<body>
+    <!-- zip file upload option -->
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="text-center">Desh Keyboard Theme Export Viewer</h1>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="csvFileUpload">Select a CSV file</label>
+                    <input type="file" class="form-control-file" id="csvFileUpload" accept=".csv">
+                </div>
+                <button onclick="handleUpload()" class="btn btn-primary">Upload</button>
+            </div>
+        </div>
+        <table id="dataTable" class="table table-bordered table-striped">
+        </table>
+    </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+<script>
+    function handleUpload() {
+        var file = document.getElementById('csvFileUpload').files[0];
+
+        if (!file) {
+            alert('Please select a CSV file.');
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const csvData = event.target.result;
+            displayCSV(csvData);
+        };
+
+        reader.readAsText(file);
+    }
+    function displayCSV(csvData) {
+        const rows = csvData.split('\n');
+
+        // Create HTML table element
+        const table = document.createElement('table');
+
+        // Create table header row
+        const headerRow = table.insertRow();
+        const headerCells = rows[0].split(',');
+        headerCells.forEach(cell => {
+            const th = document.createElement('th');
+            th.textContent = cell.trim();
+            headerRow.appendChild(th);
+        });
+
+        // Create table body rows
+        for (let i = 1; i < rows.length; i++) {
+            const rowData = rows[i].split(',');
+            if (rowData.length > 1) { // Ignore empty rows
+                const row = table.insertRow();
+                rowData.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell.trim();
+                    row.appendChild(td);
+                    // if color value has more than 7 characters, convert that
+                    if (cell.trim().length > 7) {
+                        var outputColor = convertColorFormat(cell.trim());
+                        td.style.backgroundColor = outputColor;
+                        addCopyToClipboardFunctionality(cell.trim(), td);
+                        // show alpha value when hovering over the color
+                        td.addEventListener('mouseover', function () {
+                            var alphaDecimal = extractAlpha(cell.trim());
+                            td.title = "Alpha: " + alphaDecimal + "%";
+                        });
+                    } else {
+                        td.style.backgroundColor = cell.trim();
+                        addCopyToClipboardFunctionality(cell.trim(), td);
+                    }
+
+                });
+            }
+        }
+
+        // Add the table to the HTML container
+        const tableContainer = document.getElementById('dataTable');
+        tableContainer.innerHTML = ''; // Clear previous content
+        tableContainer.appendChild(table);
+    }
+    function extractAlpha(inputColor) {
+        var alpha = inputColor.substr(1, 2);
+        var alphaDecimal = parseInt(alpha, 16) / 255;
+        alphaDecimal = Math.round(alphaDecimal * 100) / 100;
+        alphaDecimal = alphaDecimal * 100;
+        return alphaDecimal;
+    }
+    function convertColorFormat(inputColor) {
+        // Extracting individual components
+        var alpha = inputColor.substr(1, 2);
+        var red = inputColor.substr(3, 2);
+        var green = inputColor.substr(5, 2);
+        var blue = inputColor.substr(7, 2);
+
+        // Reordering components
+        var outputColor = "#" + red + green + blue + alpha;
+
+        return outputColor;
+    }
+    function addCopyToClipboardFunctionality(colorCode, cell) {
+        cell.addEventListener('click', function () {
+            navigator.clipboard.writeText(colorCode)
+                .then(() => {
+                    alert('Color code copied to clipboard: ' + colorCode);
+                })
+                .catch(err => {
+                    console.error('Failed to copy color code: ', err);
+                });
+        });
+    }
+</script>
+
+</html>
