@@ -24,7 +24,7 @@ th
 
 <body>
     <!-- zip file upload option -->
-    <div class="container mt-5">
+    <div class="container mt-5" id="fileUploadSection">
         <div class="card">
             <div class="card-header">
                 <h1 class="text-center">Desh Keyboard Theme Export Viewer</h1>
@@ -37,10 +37,10 @@ th
                 <button onclick="handleUpload()" class="btn btn-primary">Upload</button>
             </div>
         </div>
-        <table id="dataTable" class="table table-bordered">
-        </table>
+        
     </div>
-
+    <table id="dataTable" class="table table-bordered">
+    </table>
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
@@ -113,6 +113,7 @@ th
         const tableContainer = document.getElementById('dataTable');
         tableContainer.innerHTML = ''; // Clear previous content
         tableContainer.appendChild(table);
+        document.getElementById('fileUploadSection').style.display = 'none';
     }
     function extractAlpha(inputColor) {
         var alpha = inputColor.substr(1, 2);
