@@ -14,14 +14,16 @@
         position: relative;
         text-align: center;
         background-color: #0a3d62; /* Dark blue */
-        height: 100px;
+        height: 75px; /* Changed height to 75px */
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
+        padding: 0 15px; /* Added padding to create space for the share icon */
     }
     .banner {
         color: #fff;
-        font-size: 24px;
+        font-size: 20px; /* Adjusted font size to fit the smaller height */
+        flex: 1; /* Allow banner to grow to fill space */
     }
     .share-button {
         background-color: transparent;
@@ -30,27 +32,28 @@
         cursor: pointer;
     }
     .share-icon {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
+        margin-right: 15px; /* Added margin to position the share icon */
     }
 
     /* Media Query for Mobile Devices */
     @media only screen and (max-width: 600px) {
         .banner {
-            font-size: 18px;
+            font-size: 16px; /* Adjusted font size for smaller screens */
         }
         .share-icon {
-            width: 30px;
-            height: 30px;
+            width: 20px;
+            height: 20px;
         }
     }
 </style>
 </head>
 <body>
 <div class="banner-container">
-    <div class="banner" id="scoreBanner">🏏 Live Cricket Score 🏏 <br> TeamA 🆚 TeamB <br> TeamA: 150/3 (20 overs) ⏱️</div>
+    <div class="banner" id="scoreBanner">🏏 Live Cricket Score 🏏 <br> TeamA 🆚 TeamB | TeamA: 150/3 (20 overs) ⏱️</div>
     <button class="share-button" onclick="copyToClipboard()">
-        <img src="https://cdn.iconscout.com/icon/free/png-512/free-share-1780858-1514173.png" alt="Share Icon" class="share-icon">
+        <img src="icons/next.png" alt="Share Icon" class="share-icon">
     </button>
 </div>
 
