@@ -10,21 +10,6 @@
         padding: 0;
         font-family: Arial, sans-serif;
     }
-    .banner-container {
-        position: relative;
-        text-align: center;
-        background-color: #0a3d62; /* Dark blue */
-        height: 75px; /* Changed height to 75px */
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 15px; /* Added padding to create space for the share icon */
-    }
-    .banner {
-        color: #fff;
-        font-size: 20px; /* Adjusted font size to fit the smaller height */
-        flex: 1; /* Allow banner to grow to fill space */
-    }
     .share-button {
         background-color: transparent;
         border: none;
@@ -35,6 +20,21 @@
         width: 30px;
         height: 30px;
         margin-right: 15px; /* Added margin to position the share icon */
+    }
+    .banner-container {
+        position: relative;
+        text-align: center;
+        background-color: #0a3d62; /* Dark blue */
+        height: 100px; /* Changed height to 100px */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px; /* Added padding to create space for the share icon */
+    }
+    .banner {
+        color: #fff;
+        font-size: 20px; /* Adjusted font size to fit the smaller height */
+        flex: 1; /* Allow banner to grow to fill space */
     }
     .next-icon {
         width: 30px;
@@ -57,6 +57,7 @@
         height: 10px;
         border-radius: 50%;
         background-color: #ff0000; /* Red color */
+        margin-right: 5px;
         animation: blink 1s infinite alternate; /* Blink animation */
     }
 
@@ -98,7 +99,7 @@
         fetch('https://test.yemzikk.in/score.json')
             .then(response => response.json())
             .then(data => {
-                updateScore(data.score, data.over);
+                updateScore(data);
             })
             .catch(error => {
                 console.error('Failed to fetch score data:', error);
@@ -106,8 +107,21 @@
     }
 
     // Function to update score and over
-    function updateScore(score, over) {
-        document.getElementById('scoreBanner').innerHTML = `🏏 Live Cricket Score 🏏 <br> TeamA 🆚 TeamB <br> TeamA: ${score} (${over} overs) ⏱️`;
+    function updateScore(data) {
+        const matchInfo = data.matchInfo;
+        const target = matchInfo.target;
+        const bowlerInfo = matchInfo.bowlingInfo.bowlerInfo;
+        const battingInfo = matchInfo.battingInfo;
+        const batsmen = battingInfo.batters;
+
+        const leadingTeam = data.teams.find(team => team.isLeading).name;
+        const leadingBatsman = batsmen.find(batsman => batsman.isBatting);
+
+        const scoreBanner = document.getElementById('scoreBanner');
+        scoreBanner.innerHTML = `🏏 Live Cricket Score 🏏<br>`;
+        scoreBanner.innerHTML += `Target: ${target} | Leading Team: ${leadingTeam} | Leading Batsman: ${leadingBatsman.name} (${leadingBatsman.runs} runs, ${leadingBatsman.bowlsFaced} balls)<br>`;
+        scoreBanner.innerHTML += `Bowler: ${bowlerInfo.name} (Wickets: ${bowlerInfo.wickets}, Runs Allowed: ${bowlerInfo.allowedScore})<br>`;
+        scoreBanner.innerHTML += `Overs: ${matchInfo.bowlingInfo.overCount}.${matchInfo.bowlingInfo.ballCount}<br>`;
     }
 
     // Polling interval in milliseconds

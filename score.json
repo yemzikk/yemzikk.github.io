@@ -1,0 +1,48 @@
+{
+    "teams": [
+        {
+            "name": "CSK",
+            "isLeading": true
+        },
+        {
+            "name": "RCB",
+            "isLeading": false
+        }
+    ],
+    "matchInfo": {
+        "target": 215,
+        "bowlingInfo": {
+            "overCount": 11,
+            "ballCount": 4,
+            "bowlerInfo": {
+                "name": "Tye",
+                "wickets": 3,
+                "allowedScore": 53
+            },
+            "currentOver": [
+                2,
+                2,
+                1,
+                1,
+                5,
+                0
+            ]
+        },
+        "battingInfo": {
+            "batters": [
+                {
+                    "name": "Buttler",
+                    "isBatting": true,
+                    "runs": 94,
+                    "bowlsFaced": 33
+                },
+                {
+                    "name": "Rohit",
+                    "isBatting": false,
+                    "runs": 30,
+                    "bowlsFaced": 36
+                }
+            ]
+        }
+    }
+}
