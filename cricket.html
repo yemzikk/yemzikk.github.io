@@ -25,26 +25,38 @@
         font-size: 20px; /* Adjusted font size to fit the smaller height */
         flex: 1; /* Allow banner to grow to fill space */
     }
+    .share-button {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+    .share-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 15px; /* Added margin to position the share icon */
+    }
     .next-icon {
         width: 30px;
         height: 30px;
         margin-right: 15px; /* Added margin to position the icon */
     }
     .live-banner {
-        background-color: #ff0000; /* Red color */
-        color: #fff;
-        padding: 5px 10px;
-        font-weight: bold;
         display: flex; /* Use flexbox for layout */
         align-items: center; /* Center vertically */
         margin-right: 10px; /* Added margin to separate from the score */
+    }
+    .live-text {
+        color: #fff;
+        font-size: 20px; /* Initial font size */
+        font-weight: bold;
+        margin-right: 5px; /* Added margin to separate from the dot */
     }
     .live-dot {
         width: 10px;
         height: 10px;
         border-radius: 50%;
         background-color: #ff0000; /* Red color */
-        margin-right: 5px;
         animation: blink 1s infinite alternate; /* Blink animation */
     }
 
@@ -62,13 +74,8 @@
             width: 20px;
             height: 20px;
         }
-        .live-banner {
-            flex-direction: column; /* Change flex direction to column for vertical mode */
-            align-items: flex-start; /* Align items to the start in vertical mode */
-            margin: 0; /* Remove margin to align with other elements */
-        }
-        .live-dot {
-            margin-right: 0; /* Remove margin-right for vertical mode */
+        .live-text {
+            font-size: 16px; /* Reduced font size for smaller screens */
         }
     }
 </style>
@@ -76,7 +83,8 @@
 <body>
 <div class="banner-container">
     <div class="live-banner">
-        <span class="live-dot"></span>Live
+        <div class="live-text">Live</div>
+        <div class="live-dot"></div>
     </div>
     <div class="banner" id="scoreBanner">Loading...</div>
     <button class="share-button" onclick="copyToClipboard()">
