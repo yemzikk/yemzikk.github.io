@@ -119,8 +119,8 @@
 
         const scoreBanner = document.getElementById('scoreBanner');
         scoreBanner.innerHTML = `🏏 Live Cricket Score 🏏<br>`;
-        scoreBanner.innerHTML += `Target: ${target} | Leading Team: ${leadingTeam} | Leading Batsman: ${leadingBatsman.name} (${leadingBatsman.runs} runs, ${leadingBatsman.bowlsFaced} balls)<br>`;
-        scoreBanner.innerHTML += `Bowler: ${bowlerInfo.name} (Wickets: ${bowlerInfo.wickets}, Runs Allowed: ${bowlerInfo.allowedScore})<br>`;
+        scoreBanner.innerHTML += `Target: ${target} | Batting Team: ${leadingTeam}<br>`;
+        scoreBanner.innerHTML += `Batsman: ${leadingBatsman.name} - ${leadingBatsman.runs} (${leadingBatsman.bowlsFaced}) | Bowler: ${bowlerInfo.name} - ${bowlerInfo.wickets} (${bowlerInfo.allowedScore})<br>`;
         scoreBanner.innerHTML += `Overs: ${matchInfo.bowlingInfo.overCount}.${matchInfo.bowlingInfo.ballCount}<br>`;
     }
 
