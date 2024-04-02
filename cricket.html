@@ -96,7 +96,7 @@
 <script>
     // Function to fetch score data from API
     function fetchScoreData() {
-        fetch('https://api.yemzikk.in/score.json')
+        fetch('https://api.yemzikk.in/v1/score.json')
             .then(response => response.json())
             .then(data => {
                 updateScore(data);
