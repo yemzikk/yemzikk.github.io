@@ -5,6 +5,7 @@ isLeading = random.choice([True, False])
 isBatting = random.choice([True, False])
 BowlerNames = ["Siraj", "Bumrah", "Bhuvi", "Chahar", "Rabada", "Archer", "Tye", "Tahir", "Rashid", "Nortje"]
 BatterNames = ["Rahane", "Dhoni", "Kohli", "ABD", "Raina", "Rohit", "Warner", "Buttler", "Williamson", "Pant"]
+target = random.randint(150, 250)
 score = {
     "teams": [
         {
@@ -17,7 +18,9 @@ score = {
         }
     ],
     "matchInfo": {
-        "target": random.randint(150, 250),
+        "target": target,
+        "currentScore": random.randint(0, target),
+        "wickets": random.randint(0, 10),
         "bowlingInfo": {
             "overCount": random.randint(10, 20),
             "ballCount": random.randint(0, 6),
