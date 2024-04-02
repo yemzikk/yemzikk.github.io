@@ -30,16 +30,27 @@
         height: 30px;
         margin-right: 15px; /* Added margin to position the icon */
     }
-    .share-button {
-        background-color: transparent;
-        border: none;
-        padding: 0;
-        cursor: pointer;
+    .live-banner {
+        background-color: #ff0000; /* Red color */
+        color: #fff;
+        padding: 5px 10px;
+        font-weight: bold;
+        display: flex; /* Use flexbox for layout */
+        align-items: center; /* Center vertically */
+        margin-right: 10px; /* Added margin to separate from the score */
     }
-    .share-icon {
-        width: 30px;
-        height: 30px;
-        margin-right: 15px; /* Added margin to position the share icon */
+    .live-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ff0000; /* Red color */
+        margin-right: 5px;
+        animation: blink 1s infinite alternate; /* Blink animation */
+    }
+
+    @keyframes blink {
+        from { background-color: #ff0000; } /* Red color */
+        to { background-color: #fff; } /* White color */
     }
 
     /* Media Query for Mobile Devices */
@@ -51,11 +62,22 @@
             width: 20px;
             height: 20px;
         }
+        .live-banner {
+            flex-direction: column; /* Change flex direction to column for vertical mode */
+            align-items: flex-start; /* Align items to the start in vertical mode */
+            margin: 0; /* Remove margin to align with other elements */
+        }
+        .live-dot {
+            margin-right: 0; /* Remove margin-right for vertical mode */
+        }
     }
 </style>
 </head>
 <body>
 <div class="banner-container">
+    <div class="live-banner">
+        <span class="live-dot"></span>Live
+    </div>
     <div class="banner" id="scoreBanner">Loading...</div>
     <button class="share-button" onclick="copyToClipboard()">
         <img src="icons/next.png" alt="Next Icon" class="next-icon">
@@ -77,7 +99,7 @@
 
     // Function to update score and over
     function updateScore(score, over) {
-        document.getElementById('scoreBanner').innerHTML = `🏏 Live Cricket Score 🏏 <br> TeamA 🆚 TeamB <br> TeamA:${score} (${over} overs) ⏱️`;
+        document.getElementById('scoreBanner').innerHTML = `🏏 Live Cricket Score 🏏 <br> TeamA 🆚 TeamB <br> TeamA: ${score} (${over} overs) ⏱️`;
     }
 
     // Polling interval in milliseconds
