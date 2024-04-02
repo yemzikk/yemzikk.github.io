@@ -30,6 +30,17 @@
         height: 30px;
         margin-right: 15px; /* Added margin to position the icon */
     }
+    .share-button {
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+    }
+    .share-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 15px; /* Added margin to position the share icon */
+    }
 
     /* Media Query for Mobile Devices */
     @media only screen and (max-width: 600px) {
@@ -66,7 +77,7 @@
 
     // Function to update score and over
     function updateScore(score, over) {
-        document.getElementById('scoreBanner').innerText = `🏏 Score: ${score} | Over: ${over}`;
+        document.getElementById('scoreBanner').innerHTML = `🏏 Live Cricket Score 🏏 <br> TeamA 🆚 TeamB <br> ${score} (${over} overs) ⏱️`;
     }
 
     // Polling interval in milliseconds
