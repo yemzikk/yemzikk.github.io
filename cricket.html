@@ -1,108 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cricket Score Banner</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cricket Score Banner</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    .banner-container {
+        position: relative;
+        text-align: center;
+        background-color: #0a3d62; /* Dark blue */
+        height: 75px; /* Changed height to 75px */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px; /* Added padding to create space for the share icon */
+    }
+    .banner {
+        color: #fff;
+        font-size: 20px; /* Adjusted font size to fit the smaller height */
+        flex: 1; /* Allow banner to grow to fill space */
+    }
+    .next-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 15px; /* Added margin to position the icon */
+    }
 
-        .banner-container {
-            position: relative;
-            text-align: center;
-            background-color: #0a3d62;
-            /* Dark blue */
-            height: 75px;
-            /* Changed height to 75px */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            /* Added padding to create space for the share icon */
-        }
-
+    /* Media Query for Mobile Devices */
+    @media only screen and (max-width: 600px) {
         .banner {
-            color: #fff;
-            font-size: 20px;
-            /* Adjusted font size to fit the smaller height */
-            flex: 1;
-            /* Allow banner to grow to fill space */
+            font-size: 16px; /* Adjusted font size for smaller screens */
         }
-
-        .share-button {
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-        }
-
         .next-icon {
-            width: 30px;
-            height: 30px;
-            margin-right: 15px;
-            /* Added margin to position the icon */
+            width: 20px;
+            height: 20px;
         }
-
-        /* Media Query for Mobile Devices */
-        @media only screen and (max-width: 600px) {
-            .banner {
-                font-size: 16px;
-                /* Adjusted font size for smaller screens */
-            }
-
-            .next-icon {
-                width: 20px;
-                height: 20px;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
-
 <body>
-    <div class="banner-container">
-        <div class="banner" id="scoreBanner">🏏 Live Cricket Score 🏏 <br> TeamA 🆚 TeamB <br> TeamA: 150/3 (20 overs)
-            ⏱️</div>
-        <button class="share-button" onclick="copyToClipboard()">
-            <img src="icons/next.png" alt="Next Icon" class="next-icon">
-        </button>
-    </div>
+<div class="banner-container">
+    <div class="banner" id="scoreBanner">Loading...</div>
+    <button class="share-button" onclick="copyToClipboard()">
+        <img src="next.png" alt="Next Icon" class="next-icon">
+    </button>
+</div>
 
-    <script>
-        function updateScore() {
-            // Simulate updating the score
-            var scoreElement = document.getElementById('scoreBanner');
-            var currentScore = scoreElement.innerText;
-            var newScore = currentScore.replace(/(\d+)\/(\d+)/, function (match, p1, p2) {
-                var runs = parseInt(p1) + Math.floor(Math.random() * 4);
-                var wickets = parseInt(p2) + Math.floor(Math.random() * 2);
-                return runs + '/' + wickets;
+<script>
+    // Function to fetch score data from API
+    function fetchScoreData() {
+        fetch('https://test.yemzikk.in/score.json')
+            .then(response => response.json())
+            .then(data => {
+                updateScore(data.score, data.over);
+            })
+            .catch(error => {
+                console.error('Failed to fetch score data:', error);
             });
-            scoreElement.innerText = newScore;
-        }
+    }
 
-        // Refresh the page every 5 seconds
-        setInterval(updateScore, 5000);
+    // Function to update score and over
+    function updateScore(score, over) {
+        document.getElementById('scoreBanner').innerText = `🏏 Score: ${score} | Over: ${over}`;
+    }
 
-        // Copy score to clipboard function
-        function copyToClipboard() {
-            var scoreText = document.getElementById('scoreBanner').innerText;
-            navigator.clipboard.writeText(scoreText)
-                .then(function () {
-                    alert('Score copied to clipboard!');
-                })
-                .catch(function (error) {
-                    console.error('Failed to copy score: ', error);
-                });
-        }
+    // Polling interval in milliseconds
+    const pollingInterval = 5000; // 5 seconds
 
-        // Initial score update
-        updateScore();
-    </script>
+    // Function to poll for score data periodically
+    function startPolling() {
+        fetchScoreData();
+        setInterval(fetchScoreData, pollingInterval);
+    }
+
+    // Copy score to clipboard function
+    function copyToClipboard() {
+        var scoreText = document.getElementById('scoreBanner').innerText;
+        navigator.clipboard.writeText(scoreText)
+            .then(function() {
+                alert('Score copied to clipboard!');
+            })
+            .catch(function(error) {
+                console.error('Failed to copy score: ', error);
+            });
+    }
+
+    // Start polling for score data when the page loads
+    startPolling();
+</script>
 </body>
-
 </html>
