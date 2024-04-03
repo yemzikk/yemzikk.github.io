@@ -102,11 +102,14 @@ setInterval(async () => {
 }, 2000);
 
 shareIcon.addEventListener("click", () => {
-  navigator.share({
-    title: "IPL Live Score",
-    text: "Check out the live score of the IPL match",
-    url: "https://ipl.yemzikk.in",
-  });
+  const text = `🏏 ${team1.textContent} vs ${team2.textContent
+    }\nStatus: ${currentScore.textContent} (${overCount.textContent
+    })\nOn crease: ${batter1.textContent}, ${batter2.textContent
+    }\nTarget: ${target.textContent
+    }\nBowling: ${bowler.textContent
+    }\n\nGet live IPL 2024 scores with Desh keyboard.\nHindi Keyboard - Apps on Google Play`;
+    navigator.clipboard.writeText(text)
 }
 );
+
 
