@@ -68,8 +68,12 @@ const fetchData = async () => {
   bowls.innerHTML = "";
   data.matchInfo.bowlingInfo.currentOver.forEach((ball) => {
     let span = document.createElement("span");
-    span.textContent = ball;
-    bowls.appendChild(span);
+    if (ball === -1) {
+      span.classList.add("pending");
+    }else{
+      span.textContent = ball;
+      bowls.appendChild(span);
+    }
   });
   if (showBowlingInfo === true) {
     divOver.classList.add("hidden");
