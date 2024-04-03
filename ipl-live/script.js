@@ -103,9 +103,9 @@ setInterval(async () => {
 
 shareIcon.addEventListener("click", () => {
   const text = `${team1.textContent} 🆚 ${team2.textContent
-    }\nStatus: ${currentScore.textContent} (${overCount.textContent
+    }\n📊 ${currentScore.textContent} (${overCount.textContent
     })\n🏏 ${batter1.textContent}, ${batter2.textContent
-    }\🎯 ${target.textContent
+    }\n🎯 ${target.textContent
     }\n🎾 ${bowler.textContent
     }\n\nGet live IPL 2024 scores with Desh keyboard.\nHindi Keyboard - Apps on Google Play`;
     navigator.clipboard.writeText(text)
