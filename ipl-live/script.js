@@ -59,29 +59,12 @@ const fetchData = async () => {
   // set bowler info in Siraj 2(40) format 
   bowler.textContent = `${data.matchInfo.bowlingInfo.bowlerInfo.name} ${data.matchInfo.bowlingInfo.bowlerInfo.wickets}(${data.matchInfo.bowlingInfo.bowlerInfo.allowedScore})`;
 
-  // <div class="bowls" id="bowls">
-  //       <span>1</span>
-  //       <span>4</span>
-  //       <span>0</span>
-  //       <span class="pending"></span>
-  //       <span class="pending"></span>
-  //       <span class="pending"></span>
-  // </div>
-
   bowls.innerHTML = "";
   data.matchInfo.bowlingInfo.currentOver.forEach((ball) => {
     let span = document.createElement("span");
     span.textContent = ball;
     bowls.appendChild(span);
   });
-};
-
-fetchData();
-setInterval(async () => {
-  fetchData();
-}, 5000);
-
-setInterval(() => {
   if (showBowlingInfo === true) {
     divOver.classList.add("hidden");
     divBatting.classList.add("hidden");
@@ -94,6 +77,10 @@ setInterval(() => {
     divTarget.classList.add("hidden");
   }
   showBowlingInfo = !showBowlingInfo;
-}, 1000);
-// switch between page1 and page2 every 1 second
+};
+
+fetchData();
+setInterval(async () => {
+  fetchData();
+}, 2000);
 
