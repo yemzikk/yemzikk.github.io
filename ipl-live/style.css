@@ -1,0 +1,185 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  height: 100svh;
+  align-items: center;
+}
+
+.container {
+  height: 64px;
+  background-color: darkblue;
+  color: white;
+  display: flex;
+  justify-content: space-between  ;
+}
+
+.live-indication {
+  background-color: dodgerblue;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+  padding: 4px;
+}
+
+.live-indication div {
+  width: 8px;
+  height: 8px;
+  background-color: #ff0000;
+  animation: blink 1s infinite alternate;
+  border-radius: 50%;
+}
+
+@keyframes blink {
+  from { background-color: #ff0000; } 
+  to { background-color: #fff; }
+}
+
+.live-indication span {
+  writing-mode: vertical-lr;
+  transform: rotate(-180deg);
+}
+
+.scoreboard {
+  background-color: dodgerblue;
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.teams {
+  font-weight: 300;
+}
+
+.teams span.leading {
+  font-weight: 700;
+  position: relative;
+}
+
+.teams span.leading::before {
+  content: "\A";
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid red;
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.score {
+  font-weight: 600;
+}
+
+.over {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-weight: 300;
+}
+
+.batting {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+}
+
+.batter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.batter div {
+  visibility: hidden;
+  width: 4px;
+  height: 10px;
+  background-color: white;
+  transform: rotate(30deg);
+}
+
+.batter.active div {
+  visibility: visible;
+}
+
+.batter span {
+  font-weight: 300;
+}
+
+.batter.active span {
+  font-weight: 600;
+}
+
+.target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-weight: 300;
+}
+
+.bowling {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 4px 8px;
+}
+
+.bowler {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bowler div {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.bowls {
+  margin-left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.bowls span.pending {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: lightgray;
+}
+
+.share {
+  background-color: dodgerblue;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 32px 0 0 32px;
+}
+.hidden {
+  display: none;
+}

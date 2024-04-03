@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Metadata -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <!-- Style file -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Script file -->
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="container">
+    <div style="display:flex">
+      <div class="live-indication">
+        <div></div>
+        <span>Live</span>
+      </div>
+
+      <div class="scoreboard">
+        <div class="teams">
+          <span id="team1">AAA</span>
+          <span>v/s</span>
+          <span id="team2">BBB</span>
+        </div>
+
+        <div class="score"><span id="currentScore">205/0</span></div>
+      </div>
+    </div>
+
+
+    <div class="over hidden" id="divOver">
+      <span>Over</span>
+      <span id="overCount">18.4</span>
+    </div>
+
+    <div class="batting hidden" id="divBatting">
+      <div class="batter" id="batter1Indication">
+        <div></div>
+        <span id="batter1">50 (20) Rahane</span>
+      </div>
+
+      <div class="batter" id="batter2Indication">
+        <div></div>
+        <span id="batter2">80 (36) Dhoni</span>
+      </div>
+    </div>
+
+    <div class="target" id="divTarget">
+      <span>Target</span>
+      <span id="target">221</span>
+    </div>
+
+    <div class="bowling" id="divBowling">
+      <div class="bowler">
+        <div></div>
+        <span id="bowler">Siraj 2(40)</span>
+      </div>
+
+      <div class="bowls" id="bowls">
+        <span>1</span>
+        <span>4</span>
+        <span>0</span>
+        <span class="pending"></span>
+        <span class="pending"></span>
+        <span class="pending"></span>
+      </div>
+    </div>
+
+    <div class="share">
+      <span>Share</span>
+    </div>
+  </div>
+</body>
+
+</html>
