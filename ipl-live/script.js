@@ -14,6 +14,12 @@ let target = document.getElementById("target");
 let bowler = document.getElementById("bowler");
 let showBowlingInfo = true;
 let bowls = document.getElementById("bowls");
+let liveIndicator = document.getElementById("liveIndicator");
+let shareIcon = document.getElementById("shareIcon");
+
+let liveIndicatorColorWhite = "#ffffff"
+let liveIndicatorColorRed = "#ff0000"
+let liveIndicatorColorCurrent = liveIndicatorColorWhite
 // demo data 
 // {"teams": [{"name": "CSK", "isLeading": false}, {"name": "RCB", "isLeading": true}], "matchInfo": {"target": 187, "currentScore": 42, "wickets": 10, "bowlingInfo": {"overCount": 15, "ballCount": 3, "bowlerInfo": {"name": "Rashid", "wickets": 2, "allowedScore": 47}, "currentOver": [2, 1, 6, 1, 3, 3]}, "battingInfo": {"batters": [{"name": "Raina", "isBatting": false, "runs": 20, "bowlsFaced": 35}, {"name": "Rahane", "isBatting": true, "runs": 34, "bowlsFaced": 18}]}}}
 
@@ -77,10 +83,26 @@ const fetchData = async () => {
     divTarget.classList.add("hidden");
   }
   showBowlingInfo = !showBowlingInfo;
+
+  if(liveIndicatorColorCurrent === liveIndicatorColorWhite){
+    liveIndicatorColorCurrent = liveIndicatorColorRed
+  }else{
+    liveIndicatorColorCurrent = liveIndicatorColorWhite
+  }
+  liveIndicator.style.backgroundColor = liveIndicatorColorCurrent
 };
 
 fetchData();
 setInterval(async () => {
   fetchData();
 }, 2000);
+
+shareIcon.addEventListener("click", () => {
+  navigator.share({
+    title: "IPL Live Score",
+    text: "Check out the live score of the IPL match",
+    url: "https://ipl.yemzikk.in",
+  });
+}
+);
 
