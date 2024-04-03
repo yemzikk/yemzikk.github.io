@@ -72,8 +72,8 @@ const fetchData = async () => {
       span.classList.add("pending");
     }else{
       span.textContent = ball;
-      bowls.appendChild(span);
     }
+    bowls.appendChild(span);
   });
   if (showBowlingInfo === true) {
     divOver.classList.add("hidden");
