@@ -94,15 +94,13 @@ const fetchData = async () => {
     liveIndicatorColorCurrent = liveIndicatorColorWhite
   }
   liveIndicator.style.backgroundColor = liveIndicatorColorCurrent
+  Android.onPageLoaded()
 };
 
 fetchData();
 setInterval(async () => {
   fetchData();
-}, 2000).then(() => {
-  Android.onPageLoaded()
-}
-);
+}, 2000);
 
 shareIcon.addEventListener("click", () => {
   const text = `${team1.textContent} 🆚 ${team2.textContent
