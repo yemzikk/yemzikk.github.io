@@ -94,7 +94,7 @@ const fetchData = async () => {
     liveIndicatorColorCurrent = liveIndicatorColorWhite
   }
   liveIndicator.style.backgroundColor = liveIndicatorColorCurrent
-  Android.onPageLoaded()
+  window.Android.onPageLoaded()
 };
 
 fetchData();
@@ -109,7 +109,7 @@ shareIcon.addEventListener("click", () => {
     }\n🎯 ${target.textContent
     }\n🎾 ${bowler.textContent
     }\n\nGet live IPL 2024 scores with Desh keyboard.\nHindi Keyboard - Apps on Google Play`;
-    Android.onShareClick(text)
+    window.Android.onShareClick(text)
 }
 );
 
