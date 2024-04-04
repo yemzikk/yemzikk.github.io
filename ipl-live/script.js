@@ -108,7 +108,10 @@ shareIcon.addEventListener("click", () => {
     }\n🎯 ${target.textContent
     }\n🎾 ${bowler.textContent
     }\n\nGet live IPL 2024 scores with Desh keyboard.\nHindi Keyboard - Apps on Google Play`;
-    navigator.clipboard.writeText(text)
+    navigator.share({
+      title: "IPL 2024 Live Score",
+      text: text,
+    });
 }
 );
 
