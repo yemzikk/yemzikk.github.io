@@ -99,7 +99,10 @@ const fetchData = async () => {
 fetchData();
 setInterval(async () => {
   fetchData();
-}, 2000);
+}, 2000).then(() => {
+  Android.onPageLoaded()
+}
+);
 
 shareIcon.addEventListener("click", () => {
   const text = `${team1.textContent} 🆚 ${team2.textContent
@@ -108,10 +111,7 @@ shareIcon.addEventListener("click", () => {
     }\n🎯 ${target.textContent
     }\n🎾 ${bowler.textContent
     }\n\nGet live IPL 2024 scores with Desh keyboard.\nHindi Keyboard - Apps on Google Play`;
-    navigator.share({
-      title: "IPL 2024 Live Score",
-      text: text,
-    });
+    Android.onShareClick(text)
 }
 );
 
