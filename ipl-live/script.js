@@ -25,6 +25,11 @@ let liveIndicatorColorCurrent = liveIndicatorColorWhite
 
 const fetchData = async () => {
   const response = await fetch("https://api.yemzikk.in/v1/live_cricket_score");
+  // check respose status
+  if (response.status !== 200) {
+    window.Android.onError("Failed to fetch data");
+    return;
+  }
   const data = await response.json();
 
   //  Set names of both teams
@@ -94,7 +99,6 @@ const fetchData = async () => {
     liveIndicatorColorCurrent = liveIndicatorColorWhite
   }
   liveIndicator.style.backgroundColor = liveIndicatorColorCurrent
-  window.Android.onPageLoaded()
 };
 
 fetchData();
