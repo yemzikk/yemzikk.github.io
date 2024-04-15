@@ -5,7 +5,7 @@
   <!-- Metadata -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>IPL Live Score</title>
 
   <!-- Style file -->
   <link rel="stylesheet" href="style.css" />
@@ -41,12 +41,12 @@
 
     <div class="batting hidden" id="divBatting">
       <div class="batter" id="batter1Indication">
-        <div><img src="icons/bat.png"></div>
+        <div><img src="icons/bat.svg"></div>
         <span id="batter1">50 (20) Rahane</span>
       </div>
 
       <div class="batter" id="batter2Indication">
-        <div><img src="icons/bat.png"></div>
+        <div><img src="icons/bat.svg"></div>
         <span id="batter2">80 (36) Dhoni</span>
       </div>
     </div>
@@ -58,7 +58,7 @@
 
     <div class="bowling" id="divBowling">
       <div class="bowler">
-        <div><img src="icons/ball.png"></div>
+        <div><img src="icons/ball.svg"></div>
         <span id="bowler">Siraj 2(40)</span>
       </div>
 
@@ -73,15 +73,18 @@
     </div>
 
     <div class="share" id="shareIcon">
-      <span><img src="icons/share-icon.png"></span>
+      <span><img src="icons/share.svg"></span>
     </div>
   </div>
 </body>
 <script>
   // call window.Android.onPageLoaded() when page is completely loaded and ready
   window.onload = function() {
+  if(document.readyState === "complete"){
+    console.log("Page loaded");
     window.Android.onPageLoaded();
   }
+}
 </script>
 
 </html>
