@@ -11,9 +11,8 @@
 
         window.onload = function () {
             const upiId = getQueryParam('upi_id') || 'muhammedziyad12-2@okhdfcbank'; 
-            const transactionNote = getQueryParam('tn') || '';
 
-            const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&mc=&tid=&tr=&tn=${encodeURIComponent(transactionNote)}&cu=INR&url=`;
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&mc=&tid=&tr=&cu=INR`;
 
             window.location.href = upiUrl;
         };
