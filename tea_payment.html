@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Construct the UPI link dynamically
+        window.onload = function () {
+            const upiId = getQueryParam('upi_id') || 'muhammedziyad12-2@okhdfcbank'; // Replace with a default value if needed
+            const name = getQueryParam('name') || '';
+            const transactionNote = getQueryParam('tn') || 'Tea Order';
+
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&mc=&tid=&tr=&tn=${encodeURIComponent(transactionNote)}&cu=INR&url=`;
+
+            // Redirect to the generated UPI link
+            window.location.href = upiUrl;
+        };
+    </script>
+</head>
+<body>
+    <p>Redirecting you to your UPI payment link...</p>
+    <p>If you are not redirected, <a id="redirect-link">click here</a>.</p>
+</body>
+</html>

@@ -6,25 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Muhammed Ziyad TV</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <style>
+        #scroll-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1050;
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+    </style>
 </head>
 
 <body class="container-fluid bg-dark text-white">
-    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="row">
             <div class="col-12 text-center">
                 <h1 class="h1">Muhammed Ziyad TV 👨🏻‍💻</h1>
-                <p class="h5 mt-3 text-body-secondary">Love building products. Always learning something but
-                    #juniordevforlife 😊</h3>
+                <p class="h5 mt-3 text-secondary">Love building products. Always learning something but
+                    #juniordevforlife 😊</p>
             </div>
         </div>
     </div>
-    <div class="row mt-5">
+
+    <div id="email-section" class="row mt-5">
         <div class="col-12 text-center">
-            <p class="h5">Connect Me at <a href="mailto:connect@yemzikk.in">connect@yemzikk.in</a></p>
+            <p class="h5">Connect Me at <a href="mailto:connect@yemzikk.in"
+                    aria-label="Send an email to connect@yemzikk.in">connect@yemzikk.in</a></p>
         </div>
     </div>
 
+    <div id="scroll-banner" class="alert alert-info fade show" role="alert">
+        <strong>📖 Don't judge a book by its cover!</strong> There's more to explore here if you dig a little deeper. 😉
+    </div>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+    <script>
+        setTimeout(() => {
+            document.getElementById('scroll-banner').style.display = 'block';
+        }, 1000 * 10);
+    </script>
 </body>
 
 </html>
