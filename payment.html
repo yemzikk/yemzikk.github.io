@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        window.onload = function () {
+            const upiId = getQueryParam('upi_id') || '';
+            const name = getQueryParam('name') || '';
+            const transactionNote = getQueryParam('tn') || '';
+
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&mc=&tid=&tr=&tn=${encodeURIComponent(transactionNote)}&cu=INR&url=`;
+
+            window.location.href = upiUrl;
+        };
+    </script>
+</head>
+<body>
+    <p>Redirecting you to your UPI payment link...</p>
+    <p>If you are not redirected, <a id="redirect-link">Click here</a>.</p>
+</body>
+</html>
