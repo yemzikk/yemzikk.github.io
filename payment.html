@@ -13,8 +13,9 @@
             const upiId = getQueryParam('upi_id') || '';
             const name = getQueryParam('name') || '';
             const transactionNote = getQueryParam('tn') || '';
+            const amount = getQueryParam('am') || '';
 
-            const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&mc=&tid=&tr=&tn=${encodeURIComponent(transactionNote)}&cu=INR&url=`;
+            const upiUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(name)}&mc=&tid=&tr=&tn=${encodeURIComponent(transactionNote)}&cu=INR&am=${amount}`;
 
             window.location.href = upiUrl;
         };
