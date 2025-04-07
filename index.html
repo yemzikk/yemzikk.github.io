@@ -1,16 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>yemzikk 👨🏻‍💻</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class'
+    };
+  </script>
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
-
     #scroll-banner {
       display: none;
     }
@@ -36,10 +37,14 @@
     .dot-indicator a.active {
       background-color: white;
     }
+
+    .dark .dot-indicator a.active {
+      background-color: black;
+    }
   </style>
 </head>
 
-<body class="bg-black text-white font-sans overflow-y-scroll snap-y snap-mandatory scroll-smooth">
+<body class="bg-black text-white dark:bg-white dark:text-black font-sans overflow-y-scroll snap-y snap-mandatory">
 
   <!-- Scroll Dots -->
   <div class="dot-indicator">
@@ -50,9 +55,14 @@
 
   <!-- Page 1: Hero -->
   <section id="hero" class="flex items-center justify-center min-h-screen px-4 snap-start">
+    <button id="theme-toggle"
+      class="fixed top-5 right-5 z-50 bg-gray-800 text-white dark:bg-white dark:text-black p-2 rounded-full shadow-md transition">
+      🌓 Toggle Theme
+    </button>
+
     <div class="text-center">
       <h1 class="text-4xl md:text-6xl font-bold">yemzikk 👨🏻‍💻</h1>
-      <p class="text-lg md:text-xl text-gray-400 mt-4">
+      <p class="text-lg md:text-xl text-gray-400 dark:text-gray-600 mt-4">
         Love building products. Always learning something but
         <span class="text-blue-400">#juniordevforlife</span> 😊
       </p>
@@ -63,13 +73,12 @@
   <section id="about" class="flex items-center min-h-screen px-4 snap-start">
     <div class="max-w-4xl mx-auto">
       <h2 class="text-2xl font-semibold mb-4">👋 About Me</h2>
-      <p class="text-gray-300">
-        I'm a Software Engineer who loves building products, tinkering in my home lab, and scripting
-        automations that make life easier.
+      <p class="text-gray-400 dark:text-gray-600">
+        I'm a Software Engineer who loves building products, tinkering in my home lab, and scripting automations that make life easier.
         <br><br>
         Outside of work, I enjoy:
       </p>
-      <ul class="list-disc list-inside mt-2 text-gray-300">
+      <ul class="list-disc list-inside mt-2 text-gray-400 dark:text-gray-600">
         <li>📚 Reading (anything curious)</li>
         <li>🧪 Homelab experiments</li>
         <li>🌍 Solo travel & 🏍️ bike rides</li>
@@ -77,7 +86,7 @@
         <li>🔧 Self-hosting tools & services</li>
         <li>📝 Writing scripts to automate boring tasks</li>
       </ul>
-      <p class="text-gray-300 mt-4">
+      <p class="text-gray-300 dark:text-gray-700 mt-4">
         You’ll often find me deep-diving into my homelab with a coffee in hand ☕.
       </p>
     </div>
@@ -87,28 +96,32 @@
   <section id="contact" class="flex items-center min-h-screen px-4 snap-start">
     <div class="max-w-4xl mx-auto w-full">
       <h2 class="text-2xl font-semibold mb-4">📬 Contact</h2>
-      <p class="text-gray-300 mb-6">Feel free to reach out for collaboration, geeky chats, or feedback!</p>
+      <p class="text-gray-400 dark:text-gray-600 mb-6">Feel free to reach out for collaboration, geeky chats, or feedback!</p>
       <div class="flex flex-wrap gap-4 mb-6">
         <a href="mailto:connect@yemzikk.in"
-          class="bg-white text-gray-900 px-4 py-2 rounded hover:bg-gray-300">📧 Email</a>
+          class="bg-white dark:bg-black text-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition">📧
+          Email</a>
         <a href="https://github.com/yemzikk" target="_blank"
-          class="bg-white text-gray-900 px-4 py-2 rounded hover:bg-gray-300">🐱 GitHub</a>
+          class="bg-white dark:bg-black text-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition">🐱
+          GitHub</a>
         <a href="https://linkedin.com/in/yemzikk" target="_blank"
-          class="bg-white text-gray-900 px-4 py-2 rounded hover:bg-gray-300">🔗 LinkedIn</a>
+          class="bg-white dark:bg-black text-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition">🔗
+          LinkedIn</a>
         <a href="https://instagram.com/yemzikk" target="_blank"
-          class="bg-white text-gray-900 px-4 py-2 rounded hover:bg-gray-300">📸 Instagram</a>
+          class="bg-white dark:bg-black text-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition">📸
+          Instagram</a>
         <a href="https://twitter.com/yemzikk" target="_blank"
-          class="bg-white text-gray-900 px-4 py-2 rounded hover:bg-gray-300">🐦 Twitter</a>
+          class="bg-white dark:bg-black text-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition">🐦
+          Twitter</a>
         <a href="https://pexels.com/@yemzikk" target="_blank"
-          class="bg-white text-gray-900 px-4 py-2 rounded hover:bg-gray-300">🖼️ Pexels</a>
+          class="bg-white dark:bg-black text-gray-700 dark:text-gray-300 px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition">🖼️
+          Pexels</a>
       </div>
 
       <div class="text-center">
-        <p class="text-lg text-gray-300">
+        <p class="text-lg text-gray-300 dark:text-gray-700">
           Connect me at
-          <a href="mailto:connect@yemzikk.in" class="text-blue-400 underline">
-            connect@yemzikk.in
-          </a>
+          <a href="mailto:connect@yemzikk.in" class="text-blue-400 underline">connect@yemzikk.in</a>
         </p>
       </div>
 
@@ -125,12 +138,17 @@
     </div>
   </section>
 
+  <!-- Scripts -->
   <script>
+    // Footer Year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Banner
     setTimeout(() => {
       document.getElementById('scroll-banner').style.display = 'block';
     }, 10000);
 
+    // Dot Scroll Observer
     const sections = ['hero', 'about', 'contact'];
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
@@ -146,6 +164,24 @@
     sections.forEach(id => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
+    });
+
+    // Theme Toggle
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    if (localStorage.theme === 'dark' || (!localStorage.theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      html.classList.add('dark');
+    }
+
+    toggle.addEventListener('click', () => {
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.theme = 'light';
+      } else {
+        html.classList.add('dark');
+        localStorage.theme = 'dark';
+      }
     });
   </script>
 </body>
