@@ -22,17 +22,20 @@
             position: sticky;
             left: 0px;
             background-color: rgb(196, 195, 195);
+            background-clip: padding-box;
+            z-index: 3;
         }
 
-        th {
+        thead tr:nth-child(1) th {
             position: sticky;
             top: 0px;
-            background-color: rgb(196, 195, 195);
+            z-index: 4;
         }
 
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        thead tr:nth-child(2) th {
+            position: sticky;
+            top: 40px;
+            z-index: 3;
         }
 
         th,
@@ -56,6 +59,17 @@
             right: 20px;
             z-index: 1000;
         }
+
+        .table-responsive {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 1000px;
+            table-layout: auto;
+            border-collapse: collapse;
+        }
     </style>
 </head>
 
@@ -73,7 +87,11 @@
             </div>
         </div>
     </div>
-    <table id="dataTable" class="table table-bordered"></table>
+    <div id="table-container" style="overflow-x: auto; width: 100%;">
+        <table id="dataTable" style="min-width: 1000px; width: max-content;">
+        </table>
+    </div>
+
 
     <!-- Floating Button -->
     <button class="btn btn-primary floating-btn" data-bs-toggle="modal" data-bs-target="#columnSelectorModal">
@@ -265,6 +283,11 @@
             const modal = bootstrap.Modal.getInstance(document.getElementById('columnSelectorModal'));
             modal.hide();
             document.querySelector('.modal-backdrop').remove();
+
+            const container = document.getElementById('table-container');
+
+            container.scrollLeft = 0;
+            table.style.minWidth = table.scrollWidth + 'px';
         }
 
         function extractAlpha(inputColor) {
@@ -301,7 +324,7 @@
 
             const filters = Array.from(inputs).map(input => input.value.toLowerCase());
 
-            for (let i = 2; i < rows.length; i++) { // Skip header and filter row
+            for (let i = 2; i < rows.length; i++) {
                 const cells = rows[i].querySelectorAll('td');
                 let match = true;
                 filters.forEach((filter, index) => {
