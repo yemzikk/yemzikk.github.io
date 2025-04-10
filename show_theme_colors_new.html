@@ -142,6 +142,21 @@
             });
             table.appendChild(headerRow);
 
+            // Create filter row
+            const filterRow = document.createElement('tr');
+            headers.forEach((_, index) => {
+                const th = document.createElement('th');
+                const input = document.createElement('input');
+                input.className = 'form-control form-control-sm';
+                input.placeholder = 'Filter...';
+                input.setAttribute('data-index', index);
+                input.addEventListener('input', filterTable);
+                th.appendChild(input);
+                filterRow.appendChild(th);
+            });
+            table.appendChild(filterRow);
+
+
             // Create data rows
             for (let i = 1; i < rows.length; i++) {
                 const rowData = rows[i].split(',');
@@ -150,9 +165,9 @@
                     rowData.forEach((cell, cellIndex) => {
                         const td = document.createElement('td');
                         td.textContent = cell.trim();
-                        if (cell.trim().startsWith('#')){
+                        if (cell.trim().startsWith('#')) {
                             td.textContent = td.textContent.toUpperCase();
-                        } 
+                        }
                         tr.appendChild(td);
 
                         if (cell.trim().length > 7) {
@@ -278,6 +293,29 @@
                 alert('Copied: ' + text);
             });
         }
+
+        function filterTable() {
+            const table = document.getElementById('dataTable');
+            const rows = table.querySelectorAll('tr');
+            const inputs = table.querySelectorAll('tr:nth-child(2) input');
+
+            const filters = Array.from(inputs).map(input => input.value.toLowerCase());
+
+            for (let i = 2; i < rows.length; i++) { // Skip header and filter row
+                const cells = rows[i].querySelectorAll('td');
+                let match = true;
+                filters.forEach((filter, index) => {
+                    if (filter && cells[index]) {
+                        const cellText = cells[index].textContent.toLowerCase();
+                        if (!cellText.includes(filter)) {
+                            match = false;
+                        }
+                    }
+                });
+                rows[i].style.display = match ? '' : 'none';
+            }
+        }
+
     </script>
 </body>
 
