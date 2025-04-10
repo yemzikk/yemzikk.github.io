@@ -16,41 +16,48 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
     <title>Desh Keyboard Theme Export Viewer</title>
+    <style>
+        th:first-child,
+        td:first-child {
+            position: sticky;
+            left: 0px;
+            background-color: rgb(196, 195, 195);
+        }
+
+        th {
+            position: sticky;
+            top: 0px;
+            background-color: rgb(196, 195, 195);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            border: 2px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: rgb(196, 195, 195);
+        }
+
+        td {
+            background-color: white;
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
 </head>
-<style>
-    th:first-child,
-    td:first-child {
-        position: sticky;
-        left: 0px;
-        background-color: rgb(196, 195, 195);
-    }
-
-    th {
-        position: sticky;
-        top: 0px;
-        background-color: rgb(196, 195, 195);
-    }
-
-    table {
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    th, td {
-        border: 2px solid #000; 
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: rgb(196, 195, 195);
-    }
-
-    td {
-        background-color: white;
-    }
-</style>
-
 
 <body>
     <div class="container mt-5" id="fileUploadSection">
@@ -65,126 +72,251 @@
                 </div>
             </div>
         </div>
-
     </div>
-    <table id="dataTable" class="table table-bordered">
-    </table>
-</body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8QD26k"
-    crossorigin="anonymous"></script>
-<script>
-    function handleUpload() {
-        var file = document.getElementById('csvFileUpload').files[0];
+    <table id="dataTable" class="table table-bordered"></table>
 
-        if (!file) {
-            alert('Please select a CSV file.');
-            return;
+    <!-- Floating Button -->
+    <button class="btn btn-primary floating-btn" data-bs-toggle="modal" data-bs-target="#columnSelectorModal">
+        Select Attributes
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="columnSelectorModal" tabindex="-1" aria-labelledby="columnSelectorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="columnSelectorModalLabel">Select Attributes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <input type="checkbox" id="selectAll" class="form-check-input">
+                        <label for="selectAll" class="form-check-label">Select/Unselect All</label>
+                    </div>
+                    <div id="columnCheckboxes" class="mt-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="applyColumnSelection()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let headers = [];
+        let selectedColumns = [];
+
+        function handleUpload() {
+            const file = document.getElementById('csvFileUpload').files[0];
+
+            if (!file) {
+                alert('Please select a CSV file.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const csvData = event.target.result;
+                displayCSV(csvData);
+            };
+            reader.readAsText(file);
         }
 
-        const reader = new FileReader();
+        function displayCSV(csvData) {
+            const rows = csvData.split('\n');
 
-        reader.onload = function (event) {
-            const csvData = event.target.result;
-            displayCSV(csvData);
-        };
+            headers = rows[0].split(',');
+            selectedColumns = headers.map(() => true); // Initially, all columns are selected
 
-        reader.readAsText(file);
-    }
-    function displayCSV(csvData) {
-        const rows = csvData.split('\n');
+            const table = document.getElementById('dataTable');
+            table.innerHTML = '';
 
-        const table = document.createElement('table');
+            // Create header row
+            const headerRow = document.createElement('tr');
+            headers.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header.trim();
+                headerRow.appendChild(th);
+            });
+            table.appendChild(headerRow);
 
-        const headerRow = table.insertRow();
-        const headerCells = rows[0].split(',');
-        headerCells.forEach(cell => {
-            const th = document.createElement('th');
-            th.textContent = cell.trim();
-            headerRow.appendChild(th);
-        });
+            // Create filter row
+            const filterRow = document.createElement('tr');
+            headers.forEach((_, index) => {
+                const th = document.createElement('th');
+                const input = document.createElement('input');
+                input.className = 'form-control form-control-sm';
+                input.placeholder = 'Filter...';
+                input.setAttribute('data-index', index);
+                input.addEventListener('input', filterTable);
+                th.appendChild(input);
+                filterRow.appendChild(th);
+            });
+            table.appendChild(filterRow);
 
-        for (let i = 1; i < rows.length; i++) {
-            const rowData = rows[i].split(',');
-            if (rowData.length > 1) {
-                const row = table.insertRow();
-                rowData.forEach(cell => {
-                    const td = document.createElement('td');
-                    td.textContent = cell.trim();
-                    row.appendChild(td);
-                    if (cell.trim().length > 7) {
-                        var outputColor = convertColorFormat(cell.trim());
-                        td.style.backgroundColor = outputColor;
-                        addCopyToClipboardFunctionality(cell.trim(), td);
-                        td.addEventListener('mouseover', function () {
-                            var alphaDecimal = extractAlpha(cell.trim());
-                            td.title = "Alpha: " + alphaDecimal + "%";
-                        });
-                    } else {
-                        td.style.backgroundColor = cell.trim();
-                        addCopyToClipboardFunctionality(cell.trim(), td);
-                    }
-                    var color = cell.trim();
-                    var r = parseInt(color.substr(1, 2), 16);
-                    var g = parseInt(color.substr(3, 2), 16);
-                    var b = parseInt(color.substr(5, 2), 16);
-                    var uicolors = [r / 255, g / 255, b / 255];
-                    var c = uicolors.map((col) => {
-                        if (col <= 0.03928) {
-                            return col / 12.92;
+
+            // Create data rows
+            for (let i = 1; i < rows.length; i++) {
+                const rowData = rows[i].split(',');
+                if (rowData.length > 1) {
+                    const tr = document.createElement('tr');
+                    rowData.forEach((cell, cellIndex) => {
+                        const td = document.createElement('td');
+                        td.textContent = cell.trim();
+                        if (cell.trim().startsWith('#')) {
+                            td.textContent = td.textContent.toUpperCase();
                         }
-                        return Math.pow((col + 0.055) / 1.055, 2.4);
-                    });
-                    var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
-                    if (L > 0.179) {
-                        td.style.color = "black";
-                    } else {
-                        td.style.color = "white";
-                    }
+                        tr.appendChild(td);
 
+                        if (cell.trim().length > 7) {
+                            const outputColor = convertColorFormat(cell.trim());
+                            td.style.backgroundColor = outputColor;
+                            addCopyToClipboardFunctionality(cell.trim(), td);
+                            td.addEventListener('mouseover', function () {
+                                const alphaDecimal = extractAlpha(cell.trim());
+                                td.title = "Alpha: " + alphaDecimal + "%";
+                            });
+                        } else {
+                            td.style.backgroundColor = cell.trim();
+                            addCopyToClipboardFunctionality(cell.trim(), td);
+                        }
+
+                        var color = cell.trim();
+                        var r = parseInt(color.substr(1, 2), 16);
+                        var g = parseInt(color.substr(3, 2), 16);
+                        var b = parseInt(color.substr(5, 2), 16);
+                        var uicolors = [r / 255, g / 255, b / 255];
+                        var c = uicolors.map((col) => {
+                            if (col <= 0.03928) {
+                                return col / 12.92;
+                            }
+                            return Math.pow((col + 0.055) / 1.055, 2.4);
+                        });
+                        var L = 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+                        if (L > 0.179) {
+                            td.style.color = "black";
+                        } else {
+                            td.style.color = "white";
+                        }
+                    });
+                    table.appendChild(tr);
+                }
+            }
+
+            populateColumnSelector();
+            document.getElementById('fileUploadSection').style.display = 'none';
+        }
+
+        function populateColumnSelector() {
+            const columnCheckboxes = document.getElementById('columnCheckboxes');
+            columnCheckboxes.innerHTML = '';
+
+            headers.slice(1).forEach((header, index) => {
+                const div = document.createElement('div');
+                div.classList.add('form-check');
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `columnCheckbox${index}`;
+                checkbox.classList.add('form-check-input');
+                checkbox.checked = true;
+                checkbox.dataset.columnIndex = index + 1;
+
+                const label = document.createElement('label');
+                label.classList.add('form-check-label');
+                label.setAttribute('for', `columnCheckbox${index}`);
+                label.textContent = header.trim();
+
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                columnCheckboxes.appendChild(div);
+            });
+
+            document.getElementById('selectAll').checked = true;
+            document.getElementById('selectAll').addEventListener('change', toggleAllCheckboxes);
+        }
+
+        function toggleAllCheckboxes(event) {
+            const isChecked = event.target.checked;
+            const checkboxes = document.querySelectorAll('#columnCheckboxes input[type=checkbox]');
+            checkboxes.forEach(checkbox => checkbox.checked = isChecked);
+        }
+
+        function applyColumnSelection() {
+            const checkboxes = document.querySelectorAll('#columnCheckboxes input[type=checkbox]');
+
+            // Update selectedColumns array based on checkboxes
+            selectedColumns = headers.map((_, index) => {
+                if (index === 0) return true; // Always show the first column
+                return checkboxes[index - 1].checked;
+            });
+
+            const table = document.getElementById('dataTable');
+            const rows = table.querySelectorAll('tr');
+
+            rows.forEach((row, rowIndex) => {
+                row.querySelectorAll('th, td').forEach((cell, cellIndex) => {
+                    cell.style.display = selectedColumns[cellIndex] ? '' : 'none';
                 });
+            });
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('columnSelectorModal'));
+            modal.hide();
+            document.querySelector('.modal-backdrop').remove();
+        }
+
+        function extractAlpha(inputColor) {
+            var alpha = inputColor.substr(1, 2);
+            var alphaDecimal = parseInt(alpha, 16) / 255;
+            alphaDecimal = Math.round(alphaDecimal * 100) / 100;
+            alphaDecimal = alphaDecimal * 100;
+            return alphaDecimal;
+        }
+        function convertColorFormat(inputColor) {
+            var alpha = inputColor.substr(1, 2);
+            var red = inputColor.substr(3, 2);
+            var green = inputColor.substr(5, 2);
+            var blue = inputColor.substr(7, 2);
+
+            var outputColor = "#" + red + green + blue + alpha;
+
+            return outputColor;
+        }
+
+        function addCopyToClipboardFunctionality(text, element) {
+            element.style.cursor = 'pointer';
+            element.title = 'Click to copy';
+            element.addEventListener('click', () => {
+                navigator.clipboard.writeText(text);
+                alert('Copied: ' + text);
+            });
+        }
+
+        function filterTable() {
+            const table = document.getElementById('dataTable');
+            const rows = table.querySelectorAll('tr');
+            const inputs = table.querySelectorAll('tr:nth-child(2) input');
+
+            const filters = Array.from(inputs).map(input => input.value.toLowerCase());
+
+            for (let i = 2; i < rows.length; i++) { // Skip header and filter row
+                const cells = rows[i].querySelectorAll('td');
+                let match = true;
+                filters.forEach((filter, index) => {
+                    if (filter && cells[index]) {
+                        const cellText = cells[index].textContent.toLowerCase();
+                        if (!cellText.includes(filter)) {
+                            match = false;
+                        }
+                    }
+                });
+                rows[i].style.display = match ? '' : 'none';
             }
         }
 
-        const tableContainer = document.getElementById('dataTable');
-        tableContainer.innerHTML = '';
-        tableContainer.appendChild(table);
-        document.getElementById('fileUploadSection').style.display = 'none';
-    }
-    function extractAlpha(inputColor) {
-        var alpha = inputColor.substr(1, 2);
-        var alphaDecimal = parseInt(alpha, 16) / 255;
-        alphaDecimal = Math.round(alphaDecimal * 100) / 100;
-        alphaDecimal = alphaDecimal * 100;
-        return alphaDecimal;
-    }
-    function convertColorFormat(inputColor) {
-        var alpha = inputColor.substr(1, 2);
-        var red = inputColor.substr(3, 2);
-        var green = inputColor.substr(5, 2);
-        var blue = inputColor.substr(7, 2);
-
-        var outputColor = "#" + red + green + blue + alpha;
-
-        return outputColor;
-    }
-    function addCopyToClipboardFunctionality(colorCode, cell) {
-        cell.addEventListener('click', function () {
-            navigator.clipboard.writeText(colorCode)
-                .then(() => {
-                    alert('Color code copied to clipboard: ' + colorCode);
-                })
-                .catch(err => {
-                    console.error('Failed to copy color code: ', err);
-                });
-        });
-    }
-</script>
+    </script>
+</body>
 
 </html>
